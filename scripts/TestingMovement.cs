@@ -1,16 +1,21 @@
+using Unity.VisualScripting;
 using UnityEngine;
+
+[RequireComponent(typeof(CharacterController))]
 
 public class Movement : MonoBehaviour
 {
-    private Rigidbody rb;
+    private Vector3 velocity;
     private CharacterController controller;
 
-    public float walkSpeed;
+    public float walkSpeed = 5.0f;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
         controller = GetComponent<CharacterController>();
+
+        if (controller != true)
+            controller.AddComponent<CharacterController>();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -18,12 +23,13 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
-        Vector2 movement = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         movement.Normalize();
 
         Vector3 velocity = (transform.forward * movement.y + transform.right * movement.x) * walkSpeed;
+        velocity = movement * walkSpeed;
+
         controller.Move(velocity * Time.deltaTime);
-        rb.freezeRotation = true;
     }
 }
 
