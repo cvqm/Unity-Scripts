@@ -27,7 +27,6 @@ public class Movement : MonoBehaviour
         movement.Normalize();
 
         Vector3 velocity = (transform.forward * movement.y + transform.right * movement.x) * walkSpeed;
-        velocity = movement * walkSpeed;
 
         controller.Move(velocity * Time.deltaTime);
     }
